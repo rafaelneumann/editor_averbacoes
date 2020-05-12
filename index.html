@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+		<title>Editor das averbações</title>
+		<style>
+			body {
+				max-width: 1000px;
+				margin: auto;
+			}
+		</style>
+		<script>
+			function go() {
+				document.getElementById('return_area').value = '';
+                
+                let main_text = document.getElementById('copied_area').value;
+                let main_text_array = main_text.split('\n');
+                let re_dates = /\d{2}\/\d{2}\/\d{4}/g
+                let re_averbs = /(TEMP.*?)\t/g
+                let valid_count = 1;
+                
+                for (let i = 0; i < main_text_array.length; i++ ) {                    
+                    let dates = main_text_array[i].match(re_dates);
+                    let averb = main_text_array[i].match(re_averbs);
+                    
+                    if (dates != null && dates.length >= 2) {
+                        document.getElementById('return_area').value += `${valid_count}. ${(averb[0].trim())}\n`;
+                        document.getElementById('return_area').value += `Data início: ${dates[0]}\n`;
+                        document.getElementById('return_area').value += `Data fim: ${dates[0]}\nTipo de regime: INSS\nLocal: \n\n`;
+                        valid_count += 1;
+                    }
+                }				
+            }
+		</script>
+	</head>
+	<body>
+		<h2>Texto original da Consulta de Averbações do SIGRH:</h2>
+		<textarea rows="8" cols="100" onkeyup="go();" id="copied_area"></textarea>
+		<h2>Texto formatado:</h2>
+		<textarea rows="14" cols="100" id="return_area"></textarea>
+	</body>
+</html> 
